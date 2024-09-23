@@ -1,23 +1,38 @@
 "use client";
 import { api } from "~/trpc/react";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 
 export default function Page() {
   const params = useParams();
-  const pokemon = api.pokemon.details.useQuery({ id: String(params.id) })?.data;
+  const { data } = api.pokemon.details.useQuery({
+    id: String(params.id ?? ""),
+  });
+
   return (
     <div className="flex h-[166px] flex-wrap overflow-y-auto bg-lime-200 p-1 shadow-inner">
       <div className="flex-1">
-        <img
-          className="aspect-square w-32"
-          src={pokemon?.sprites.front_default}
-          alt={pokemon?.name}
-        />
-        <p className="text-sm">{pokemon?.name}</p>
+        {data?.sprites.front_default && (
+          <Image
+            width={82}
+            height={82}
+            className="aspect-square w-36"
+            src={data.sprites.other["official-artwork"].front_default}
+            alt={data.name}
+            quality={100}
+          />
+        )}
+        <p className="text-center text-sm font-bold capitalize">{data?.name}</p>
       </div>
-      <div className="h-full flex-1 rounded-lg border p-1">
-        {pokemon?.abilities.map((ability) => (
-          <div key={ability.ability.name}>{ability.ability.name}</div>
+      <div className="flex h-full flex-1 flex-col justify-between rounded-lg border p-1">
+        {data?.stats.map((stat) => (
+          <div
+            key={stat.stat.name}
+            className="flex items-center justify-between"
+          >
+            <h3 className="text-xs font-bold">{stat.stat.name}</h3>
+            <p className="text-xs">{stat.base_stat}</p>
+          </div>
         ))}
       </div>
     </div>
