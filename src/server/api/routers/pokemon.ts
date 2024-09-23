@@ -113,6 +113,33 @@ interface IPokemonDetails {
   weight: number;
 }
 
+interface IPokedex {
+  descriptions: {
+    description: string;
+    language: {
+      name: string;
+      url: string;
+    };
+  }[];
+  id: number;
+  is_main_series: boolean;
+  name: string;
+  names: {
+    language: {
+      name: string;
+      url: string;
+    };
+    name: string;
+  }[];
+  pokemon_entries: {
+    entry_number: number;
+    pokemon_species: {
+      name: string;
+      url: string;
+    };
+  }[];
+}
+
 export const pokemonRouter = createTRPCRouter({
   home: publicProcedure
     .input(
@@ -124,6 +151,10 @@ export const pokemonRouter = createTRPCRouter({
       );
       return (await data.json()) as IPokemonListing;
     }),
+  pokedex: publicProcedure.query(async () => {
+    const data = await fetch(`https://pokeapi.co/api/v2/pokedex/1/`);
+    return (await data.json()) as IPokedex;
+  }),
   details: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input }) => {
