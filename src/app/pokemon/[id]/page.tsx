@@ -22,6 +22,7 @@ export default function Page() {
               alt={data.name}
               quality={100}
               priority
+              unoptimized
             />
           )}
           <p className="text-center text-sm font-bold capitalize">

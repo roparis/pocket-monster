@@ -24,7 +24,7 @@ export default async function Home() {
                   src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.entry_number}.png`}
                   alt={pokemon.pokemon_species.name}
                   quality={100}
-                  priority
+                  unoptimized
                 />
                 <p className="text-sm">{pokemon.pokemon_species.name}</p>
               </div>
